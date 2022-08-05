@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getCategories } from '../services/api';
 
 class Home extends React.Component {
@@ -29,6 +30,24 @@ class Home extends React.Component {
       </label>
     ));
     return (
+
+      <div>
+        <input type="text" name="product" onChange={ this.handleChange } />
+        {
+          product === ''
+            ? (
+              <p data-testid="home-initial-message">
+                Digite algum termo de pesquisa ou escolha uma categoria.
+              </p>)
+            : products
+        }
+        <Link
+          products={ products }
+          to="./shopping-cart"
+          data-testid="shopping-cart-button"
+        >
+          <button type="button">Ir para o Carrinho</button>
+        </Link>
       <div className="div-home">
         <div className="div-category">
           { categoriesProduct }
