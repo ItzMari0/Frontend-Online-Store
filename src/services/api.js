@@ -1,5 +1,5 @@
 export async function getCategories() {
-  // Implemente aquidwdw
+  // Implemente aquid
 }
 
 export async function getProductsFromCategoryAndQuery(/* categoryId, query */) {
