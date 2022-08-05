@@ -23,22 +23,32 @@ class Home extends React.Component {
   render() {
     const { product, products, categories } = this.state;
     const categoriesProduct = categories.map(({ name, id }) => (
-      <button data-testid="category" type="button" key={ id }>{ name }</button>
+      <label data-testid="category" key={ id } htmlFor={ id }>
+        <input type="radio" name="category" id={ id } />
+        { name }
+      </label>
     ));
     return (
-      <div>
-        <div>
+      <div className="div-home">
+        <div className="div-category">
           { categoriesProduct }
         </div>
-        <input type="text" name="product" onChange={ this.handleChange } />
-        {
-          product === ''
-            ? (
-              <p data-testid="home-initial-message">
-                Digite algum termo de pesquisa ou escolha uma categoria.
-              </p>)
-            : products
-        }
+        <div className="div-input">
+          <input
+            className="input-search"
+            type="text"
+            name="product"
+            onChange={ this.handleChange }
+          />
+          {
+            product === ''
+              ? (
+                <p data-testid="home-initial-message">
+                  Digite algum termo de pesquisa ou escolha uma categoria.
+                </p>)
+              : products
+          }
+        </div>
       </div>
     );
   }
