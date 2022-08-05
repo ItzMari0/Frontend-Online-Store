@@ -48,27 +48,27 @@ class Home extends React.Component {
         >
           <button type="button">Ir para o Carrinho</button>
         </Link>
-      <div className="div-home">
-        <div className="div-category">
-          { categoriesProduct }
+        <div className="div-home">
+          <div className="div-category">
+            { categoriesProduct }
+          </div>
+          <div className="div-input">
+            <input
+              className="input-search"
+              type="text"
+              name="product"
+              onChange={ this.handleChange }
+            />
+            {
+              product === ''
+                ? (
+                  <p data-testid="home-initial-message">
+                    Digite algum termo de pesquisa ou escolha uma categoria.
+                  </p>)
+                : products
+            }
+          </div>
         </div>
-        <div className="div-input">
-          <input
-            className="input-search"
-            type="text"
-            name="product"
-            onChange={ this.handleChange }
-          />
-          {
-            product === ''
-              ? (
-                <p data-testid="home-initial-message">
-                  Digite algum termo de pesquisa ou escolha uma categoria.
-                </p>)
-              : products
-          }
-        </div>
-      </div>
       </div>
     );
   }
