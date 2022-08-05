@@ -32,15 +32,6 @@ class Home extends React.Component {
     return (
 
       <div>
-        <input type="text" name="product" onChange={ this.handleChange } />
-        {
-          product === ''
-            ? (
-              <p data-testid="home-initial-message">
-                Digite algum termo de pesquisa ou escolha uma categoria.
-              </p>)
-            : products
-        }
         <Link
           products={ products }
           to="./shopping-cart"
