@@ -6,45 +6,46 @@ class Card extends Component {
   render() {
     const { returnedProducts, handleCart, renderBtn } = this.props;
     const listItemsCart = [...new Set(returnedProducts)];
-    let listProducts = listItemsCart.map((product) => {
+    let listProducts = listItemsCart.map((product, index) => {
       const qntCart = returnedProducts.filter((element) => element === product);
       return (
-        <Link
-          to={ `/product-details/${id}` }
-          data-testid="product-detail-link"
-          key={ index }
-        >
-          <div data-testid="product" key={ product.id }>
-            <p data-testid="shopping-cart-product-name">{ product.title }</p>
+        <div data-testid="product" key={ product.id }>
+          <Link
+            to={ `/product-details/${product.id}` }
+            data-testid="product-detail-link"
+            key={ index }
+          >
+            <p data-testid="shopping-cart-product-name">{product.title}</p>
             <img src={ product.thumbnail } alt={ product.title } />
             <p>{`R$ ${product.price}`}</p>
             {
               !renderBtn ? ''
                 : (
                   <p data-testid="shopping-cart-product-quantity">
-                    { `Quantidade: ${qntCart.length}` }
+                    {`Quantidade: ${qntCart.length}`}
                   </p>)
             }
-            {
-              !renderBtn ? (
-                <button
-                  type="button"
-                  data-testid="product-add-to-cart"
-                  onClick={ (event) => handleCart(event, product) }
-                >
-                  Adicionar ao Carrinho
-                </button>)
-                : ''
-            }
-          </div>
-        );
-      });
+          </Link>
+          {
+            !renderBtn ? (
+              <button
+                type="button"
+                data-testid="product-add-to-cart"
+                onClick={ (event) => handleCart(event, product) }
+              >
+                Adicionar ao Carrinho
+              </button>)
+              : ''
+          }
+        </div>
+      );
+    });
     if (returnedProducts.length === 0) {
       (listProducts = <p>Nenhum produto foi encontrado</p>);
     }
     return (
       <div>
-        { listProducts }
+        {listProducts}
       </div>
     );
   }

@@ -30,6 +30,7 @@ class App extends React.Component {
               exact
               path="/shopping-cart"
               render={ () => <ShoppingCart cartProducts={ cartProducts } /> }
+            />
             <Route
               exact
               path="/product-details/:id"
