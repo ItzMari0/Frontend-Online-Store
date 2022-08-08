@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './Components/Home';
 import ShoppingCart from './Components/ShoppingCart';
+import ProductDetail from './Components/ProductDetail';
 
 class App extends React.Component {
   constructor() {
@@ -29,6 +30,10 @@ class App extends React.Component {
               exact
               path="/shopping-cart"
               render={ () => <ShoppingCart cartProducts={ cartProducts } /> }
+            <Route
+              exact
+              path="/product-details/:id"
+              render={ (props) => <ProductDetail { ...props } /> }
             />
           </Switch>
         </BrowserRouter>
