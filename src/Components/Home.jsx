@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Card from './Card';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
@@ -50,6 +51,7 @@ class Home extends React.Component {
 
   render() {
     const { product, products, categories, returnedProducts } = this.state;
+    const { handleCart } = this.props;
     const categoriesProduct = categories.map(({ name, id }) => (
       <label data-testid="category" key={ id } htmlFor={ id }>
         <input
@@ -100,12 +102,21 @@ class Home extends React.Component {
                   </p>)
                 : products
             }
-            { <Card returnedProducts={ returnedProducts } /> }
+            {
+              <Card
+                handleCart={ handleCart }
+                returnedProducts={ returnedProducts }
+              />
+            }
           </div>
         </div>
       </div>
     );
   }
 }
+
+Home.propTypes = {
+  handleCart: PropTypes.func.isRequired,
+};
 
 export default Home;
