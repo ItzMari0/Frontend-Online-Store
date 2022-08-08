@@ -23,10 +23,11 @@ export default class ProductDetail extends Component {
   render() {
     const { productDetails } = this.state;
     const { title, thumbnail, price } = productDetails;
+    const { handleCart } = this.props;
     return (
       <div>
-        <h1 data-testid="product-detail-name">{ title }</h1>
-        <h2 data-testid="product-detail-price">{ price }</h2>
+        <h1 data-testid="product-detail-name">{title}</h1>
+        <h2 data-testid="product-detail-price">{price}</h2>
         <img src={ thumbnail } alt={ title } data-testid="product-detail-image" />
         <Link
           to="../shopping-cart"
@@ -34,6 +35,13 @@ export default class ProductDetail extends Component {
         >
           <button type="button">Ir para o Carrinho</button>
         </Link>
+        <button
+          type="button"
+          data-testid="product-detail-add-to-cart"
+          onClick={ (event) => handleCart(event, productDetails) }
+        >
+          Adicionar ao Carrinho
+        </button>
       </div>
     );
   }
@@ -45,4 +53,9 @@ ProductDetail.propTypes = {
       id: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  handleCart: PropTypes.func,
+};
+
+ProductDetail.defaultProps = {
+  handleCart: () => { },
 };
