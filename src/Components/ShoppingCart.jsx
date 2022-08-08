@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Card from './Card';
 
 export default class ShoppingCart extends Component {
   render() {
-    const { products } = this.props;
+    const { cartProducts } = this.props;
     return (
       <div>
         {
-          (!products.length)
+          (!cartProducts.length)
             ? <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
-            : <div />
+            : <Card returnedProducts={ cartProducts } renderBtn />
         }
       </div>
 
@@ -18,10 +19,10 @@ export default class ShoppingCart extends Component {
 }
 
 ShoppingCart.propTypes = {
-  products: PropTypes.arrayOf(PropTypes.shape({
+  cartProducts: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
   })),
 };
 ShoppingCart.defaultProps = {
-  products: [],
+  cartProducts: [],
 };
