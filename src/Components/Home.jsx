@@ -8,6 +8,7 @@ class Home extends React.Component {
     super();
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleCategories = this.handleCategories.bind(this);
     this.state = {
       product: '',
       products: [],
@@ -40,6 +41,13 @@ class Home extends React.Component {
     });
   }
 
+  handleCategories(_event, id) {
+    this.setState(async () => {
+      const data = await getProductsFromCategoryAndQuery(id);
+      return this.setState({ returnedProducts: data.results });
+    });
+  }
+
   render() {
     const { product, products, categories, returnedProducts } = this.state;
     const categoriesProduct = categories.map(({ name, id }) => (
@@ -49,6 +57,7 @@ class Home extends React.Component {
           name="category"
           id={ id }
           onChange={ (event) => this.handleChange(event, id) }
+          onClick={ (event) => this.handleCategories(event, id) }
         />
         { name }
       </label>
