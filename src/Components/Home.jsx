@@ -1,12 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../services/api';
+import Card from './Card';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends React.Component {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
-    this.state = { product: '', products: [], categories: [] };
+    this.handleClick = this.handleClick.bind(this);
+    this.state = {
+      product: '',
+      products: [],
+      categories: [],
+      id: '',
+      returnedProducts: [],
+    };
   }
 
   componentDidMount() {
@@ -16,16 +24,32 @@ class Home extends React.Component {
     });
   }
 
-  handleChange({ target }) {
-    const { value, name } = target;
-    this.setState({ [name]: value });
+  handleChange({ target }, idProduct) {
+    const { name } = target;
+    const value = target.type === 'radio' ? target.id : target.value;
+    if (idProduct === '') this.setState({ [name]: value });
+    else this.setState({ [name]: value, id: idProduct });
+  }
+
+  handleClick() {
+    const { id, product } = this.state;
+    if (id === '' && product === '') return this.setState({ returnedProducts: [] });
+    this.setState(async () => {
+      const data = await getProductsFromCategoryAndQuery(id, product);
+      return this.setState({ returnedProducts: data.results });
+    });
   }
 
   render() {
-    const { product, products, categories } = this.state;
+    const { product, products, categories, returnedProducts } = this.state;
     const categoriesProduct = categories.map(({ name, id }) => (
       <label data-testid="category" key={ id } htmlFor={ id }>
-        <input type="radio" name="category" id={ id } />
+        <input
+          type="radio"
+          name="category"
+          id={ id }
+          onChange={ (event) => this.handleChange(event, id) }
+        />
         { name }
       </label>
     ));
@@ -46,10 +70,19 @@ class Home extends React.Component {
           <div className="div-input">
             <input
               className="input-search"
+              data-testid="query-input"
               type="text"
               name="product"
-              onChange={ this.handleChange }
+              placeholder="Pesquise por produtos"
+              onChange={ (event) => this.handleChange(event, '') }
             />
+            <button
+              type="button"
+              data-testid="query-button"
+              onClick={ this.handleClick }
+            >
+              Pesquisar
+            </button>
             {
               product === ''
                 ? (
@@ -58,6 +91,7 @@ class Home extends React.Component {
                   </p>)
                 : products
             }
+            { <Card returnedProducts={ returnedProducts } /> }
           </div>
         </div>
       </div>
