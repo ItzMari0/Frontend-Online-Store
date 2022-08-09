@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductById } from '../services/api';
+import Form from './Form';
 
 export default class ProductDetail extends Component {
   state = {
@@ -24,6 +25,7 @@ export default class ProductDetail extends Component {
     const { productDetails } = this.state;
     const { title, thumbnail, price } = productDetails;
     const { handleCart } = this.props;
+    const { match: { params: { id } } } = this.props;
     return (
       <div>
         <h1 data-testid="product-detail-name">{title}</h1>
@@ -42,6 +44,7 @@ export default class ProductDetail extends Component {
         >
           Adicionar ao Carrinho
         </button>
+        <Form idPage={ id } />
       </div>
     );
   }
