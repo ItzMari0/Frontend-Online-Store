@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductById } from '../services/api';
+import Form from './Form';
 
 export default class ProductDetail extends Component {
   state = {
@@ -42,6 +43,7 @@ export default class ProductDetail extends Component {
         >
           Adicionar ao Carrinho
         </button>
+        <Form />
       </div>
     );
   }
