@@ -15,8 +15,6 @@ class App extends React.Component {
     const { cartProducts } = this.state;
     const filtred = cartProducts.filter((i) => i !== item);
     if (_event.target.value === 'Remover Item') {
-      this.setState((prevState) => (
-        { cartProducts: [...prevState.cartProducts.filter((i) => i !== item)] }));
       return this.setState({ cartProducts: [...filtred] });
     }
     if (_event.target.value === '-') {
@@ -32,7 +30,6 @@ class App extends React.Component {
 
   render() {
     const { cartProducts } = this.state;
-    /* console.log(cartProducts); */
     return (
       <div className="App">
         <BrowserRouter>

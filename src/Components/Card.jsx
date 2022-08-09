@@ -6,7 +6,6 @@ class Card extends Component {
   render() {
     const { returnedProducts, handleCart, renderBtn } = this.props;
     const listItemsCart = [...new Set(returnedProducts)];
-    /* console.log(returnedProducts); */
     let listProducts = listItemsCart.map((product, index) => {
       const qntCart = returnedProducts.filter((element) => element === product);
       return (
