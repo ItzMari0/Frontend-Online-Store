@@ -6,6 +6,7 @@ class Card extends Component {
   render() {
     const { returnedProducts, handleCart, renderBtn } = this.props;
     const listItemsCart = [...new Set(returnedProducts)];
+    /* console.log(returnedProducts); */
     let listProducts = listItemsCart.map((product, index) => {
       const qntCart = returnedProducts.filter((element) => element === product);
       return (
@@ -18,14 +19,39 @@ class Card extends Component {
             <p data-testid="shopping-cart-product-name">{product.title}</p>
             <img src={ product.thumbnail } alt={ product.title } />
             <p>{`R$ ${product.price}`}</p>
-            {
-              !renderBtn ? ''
-                : (
+          </Link>
+          {
+            !renderBtn ? ''
+              : (
+                <>
+                  <input
+                    type="button"
+                    id="add+Item"
+                    value="+"
+                    data-testid="product-increase-quantity"
+                    onClick={ (event) => handleCart(event, product) }
+                  />
+                  <input
+                    type="button"
+                    id="add-Item"
+                    value="-"
+                    disabled={ qntCart.length === 1 }
+                    data-testid="product-decrease-quantity"
+                    onClick={ (event) => handleCart(event, product) }
+                  />
                   <p data-testid="shopping-cart-product-quantity">
                     {`Quantidade: ${qntCart.length}`}
-                  </p>)
-            }
-          </Link>
+                  </p>
+                  <input
+                    type="button"
+                    id="remove-product"
+                    data-testid="remove-product"
+                    value="Remover Item"
+                    onClick={ (event) => handleCart(event, product) }
+                  />
+                </>
+              )
+          }
           {
             !renderBtn ? (
               <button

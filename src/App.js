@@ -12,11 +12,27 @@ class App extends React.Component {
   }
 
   handleCart(_event, item) {
-    this.setState((prevState) => ({ cartProducts: [...prevState.cartProducts, item] }));
+    const { cartProducts } = this.state;
+    const filtred = cartProducts.filter((i) => i !== item);
+    if (_event.target.value === 'Remover Item') {
+      this.setState((prevState) => (
+        { cartProducts: [...prevState.cartProducts.filter((i) => i !== item)] }));
+      return this.setState({ cartProducts: [...filtred] });
+    }
+    if (_event.target.value === '-') {
+      const soItens = cartProducts.filter((i) => i === item);
+      if (soItens.length > 1) {
+        soItens.pop();
+      }
+      this.setState({ cartProducts: [...soItens, ...filtred] });
+    } else {
+      this.setState((prevState) => ({ cartProducts: [...prevState.cartProducts, item] }));
+    }
   }
 
   render() {
     const { cartProducts } = this.state;
+    /* console.log(cartProducts); */
     return (
       <div className="App">
         <BrowserRouter>
@@ -29,7 +45,10 @@ class App extends React.Component {
             <Route
               exact
               path="/shopping-cart"
-              render={ () => <ShoppingCart cartProducts={ cartProducts } /> }
+              render={ () => (<ShoppingCart
+                handleCart={ this.handleCart }
+                cartProducts={ cartProducts }
+              />) }
             />
             <Route
               exact
