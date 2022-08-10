@@ -6,11 +6,14 @@ import Form from './Form';
 
 export default class ProductDetail extends Component {
   state = {
-    productDetails: '',
+    productDetails: '', quantity: '',
   }
 
   componentDidMount() {
     this.getProduct();
+    const x = JSON.parse(localStorage.CardProducts).reduce((acc, curr) => (
+      curr[1] + acc), 0);
+    this.setState({ quantity: x });
   }
 
   getProduct = async () => {
@@ -22,7 +25,7 @@ export default class ProductDetail extends Component {
   }
 
   render() {
-    const { productDetails } = this.state;
+    const { productDetails, quantity } = this.state;
     const { title, thumbnail, price } = productDetails;
     const { handleCart } = this.props;
     const { match: { params: { id } } } = this.props;
@@ -36,6 +39,7 @@ export default class ProductDetail extends Component {
           data-testid="shopping-cart-button"
         >
           <button type="button">Ir para o Carrinho</button>
+          <span data-testid="shopping-cart-size">{ quantity }</span>
         </Link>
         <button
           type="button"

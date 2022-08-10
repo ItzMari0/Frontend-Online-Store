@@ -68,7 +68,7 @@ class App extends React.Component {
     this.setState({ validLink: validation });
     if (validation) {
       this.setState({ cartProducts: [] });
-      localStorage.cartProducts = '';
+      localStorage.CardProducts = '';
     }
   }
 
