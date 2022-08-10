@@ -23,14 +23,14 @@ class CartRender extends Component {
                 <>
                   <input
                     type="button"
-                    id="add+Item"
+                    name="add+Item"
                     value="+"
                     data-testid="product-increase-quantity"
                     onClick={ (event) => handleCart(event, product[0]) }
                   />
                   <input
                     type="button"
-                    id="add-Item"
+                    name="add-Item"
                     value="-"
                     disabled={ product[1] === 1 }
                     data-testid="product-decrease-quantity"
@@ -41,7 +41,7 @@ class CartRender extends Component {
                   </p>
                   <input
                     type="button"
-                    id="remove-product"
+                    name="remove-product"
                     data-testid="remove-product"
                     value="Remover Item"
                     onClick={ (event) => handleCart(event, product[0]) }

@@ -1,14 +1,16 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Home from './Components/Home';
 import ShoppingCart from './Components/ShoppingCart';
 import ProductDetail from './Components/ProductDetail';
+import Checkout from './Components/Checkout';
 
 class App extends React.Component {
   constructor() {
     super();
-    this.state = { cartProducts: [] };
+    this.state = { cartProducts: [], validLink: false };
     this.handleCart = this.handleCart.bind(this);
+    this.changeLinkPay = this.changeLinkPay.bind(this);
   }
 
   componentDidMount() {
@@ -62,8 +64,16 @@ class App extends React.Component {
     }));
   }
 
+  changeLinkPay(validation) {
+    this.setState({ validLink: validation });
+    if (validation) {
+      this.setState({ cartProducts: [] });
+      localStorage.cartProducts = '';
+    }
+  }
+
   render() {
-    const { cartProducts } = this.state;
+    const { cartProducts, validLink } = this.state;
     return (
       <div className="App">
         <BrowserRouter>
@@ -88,6 +98,19 @@ class App extends React.Component {
                 (props) => <ProductDetail handleCart={ this.handleCart } { ...props } />
               }
             />
+            <Route
+              exact
+              path="/checkout"
+            >
+              {
+                validLink ? <Redirect to="/" />
+                  : (
+                    <Checkout
+                      changeLinkPay={ this.changeLinkPay }
+                      cartProducts={ cartProducts }
+                    />)
+              }
+            </Route>
           </Switch>
         </BrowserRouter>
       </div>

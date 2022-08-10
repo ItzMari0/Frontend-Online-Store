@@ -26,14 +26,14 @@ class Card extends Component {
                 <>
                   <input
                     type="button"
-                    id="add+Item"
+                    name="add+Item"
                     value="+"
                     data-testid="product-increase-quantity"
                     onClick={ (event) => handleCart(event, product) }
                   />
                   <input
                     type="button"
-                    id="add-Item"
+                    name="add-Item"
                     value="-"
                     disabled={ qntCart.length === 1 }
                     data-testid="product-decrease-quantity"
@@ -44,7 +44,7 @@ class Card extends Component {
                   </p>
                   <input
                     type="button"
-                    id="remove-product"
+                    name="remove-product"
                     data-testid="remove-product"
                     value="Remover Item"
                     onClick={ (event) => handleCart(event, product) }

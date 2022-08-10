@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import CartRender from './CartRender';
 
 export default class ShoppingCart extends Component {
@@ -11,11 +12,16 @@ export default class ShoppingCart extends Component {
           (!cartProducts.length)
             ? <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
             : (
-              <CartRender
-                handleCart={ handleCart }
-                returnedProducts={ cartProducts }
-                renderBtn
-              />)
+              <div>
+                <CartRender
+                  handleCart={ handleCart }
+                  returnedProducts={ cartProducts }
+                  renderBtn
+                />
+                <Link to="/checkout" data-testid="checkout-products">
+                  Finalizar Compra
+                </Link>
+              </div>)
         }
       </div>
 
