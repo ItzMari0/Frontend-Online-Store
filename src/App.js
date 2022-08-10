@@ -1,22 +1,79 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Home from './Components/Home';
 import ShoppingCart from './Components/ShoppingCart';
 import ProductDetail from './Components/ProductDetail';
+import Checkout from './Components/Checkout';
 
 class App extends React.Component {
   constructor() {
     super();
-    this.state = { cartProducts: [] };
+    this.state = { cartProducts: [], validLink: false };
     this.handleCart = this.handleCart.bind(this);
+    this.changeLinkPay = this.changeLinkPay.bind(this);
   }
 
-  handleCart(_event, item) {
-    this.setState((prevState) => ({ cartProducts: [...prevState.cartProducts, item] }));
+  componentDidMount() {
+    if (localStorage.getItem('CardProducts')) {
+      const storage = localStorage.getItem('CardProducts');
+      const result = JSON.parse(storage);
+      this.setState({
+        cartProducts: result,
+      });
+    }
+  }
+
+  componentDidUpdate() {
+    const { cartProducts } = this.state;
+    if (cartProducts) {
+      localStorage.setItem('CardProducts', JSON.stringify(cartProducts));
+    }
+  }
+
+  handleCart(event, item) {
+    const { cartProducts } = this.state;
+    /* const newItem = {...item, qt: 1}; */
+    const filtered = cartProducts.filter((i) => i[0].id !== item.id);
+    console.log(filtered);
+    if (event.target.value === 'Remover Item') {
+      return this.setState({ cartProducts: [...filtered] });
+    }
+    if (event.target.value === '-') {
+      let qnt = 1;
+      cartProducts.forEach((e, index) => {
+        if (e[0].id === item.id) {
+          qnt = e[1] - 1;
+          cartProducts.splice(index, 1);
+        }
+      });
+      return this.setState((prevState) => ({
+        cartProducts: [...prevState.cartProducts, [item, qnt]],
+      }));
+    }
+    let qnt = 1;
+    cartProducts.forEach((e) => {
+      if (e[0].id === item.id) qnt = e[1] + 1;
+    });
+    if (qnt > 1) {
+      (cartProducts.forEach((e, index) => {
+        if (e[0].id === item.id) cartProducts.splice(index, 1);
+      }));
+    }
+    this.setState((prevState) => ({
+      cartProducts: [...prevState.cartProducts, [item, qnt]],
+    }));
+  }
+
+  changeLinkPay(validation) {
+    this.setState({ validLink: validation });
+    if (validation) {
+      this.setState({ cartProducts: [] });
+      localStorage.cartProducts = '';
+    }
   }
 
   render() {
-    const { cartProducts } = this.state;
+    const { cartProducts, validLink } = this.state;
     return (
       <div className="App">
         <BrowserRouter>
@@ -29,7 +86,10 @@ class App extends React.Component {
             <Route
               exact
               path="/shopping-cart"
-              render={ () => <ShoppingCart cartProducts={ cartProducts } /> }
+              render={ () => (<ShoppingCart
+                handleCart={ this.handleCart }
+                cartProducts={ cartProducts }
+              />) }
             />
             <Route
               exact
@@ -38,6 +98,19 @@ class App extends React.Component {
                 (props) => <ProductDetail handleCart={ this.handleCart } { ...props } />
               }
             />
+            <Route
+              exact
+              path="/checkout"
+            >
+              {
+                validLink ? <Redirect to="/" />
+                  : (
+                    <Checkout
+                      changeLinkPay={ this.changeLinkPay }
+                      cartProducts={ cartProducts }
+                    />)
+              }
+            </Route>
           </Switch>
         </BrowserRouter>
       </div>

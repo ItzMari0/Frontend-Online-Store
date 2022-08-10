@@ -5,27 +5,53 @@ import PropTypes from 'prop-types';
 class Card extends Component {
   render() {
     const { returnedProducts, handleCart, renderBtn } = this.props;
-    const listItemsCart = [...new Set(returnedProducts)];
-    let listProducts = listItemsCart.map((product, index) => {
+    const listItemsCart = returnedProducts.filter((ele, pos) => (
+      returnedProducts.indexOf(ele) === pos
+    ));
+    let listProducts = listItemsCart.map((product) => {
       const qntCart = returnedProducts.filter((element) => element === product);
       return (
         <div data-testid="product" key={ product.id }>
           <Link
             to={ `/product-details/${product.id}` }
             data-testid="product-detail-link"
-            key={ index }
           >
             <p data-testid="shopping-cart-product-name">{product.title}</p>
             <img src={ product.thumbnail } alt={ product.title } />
             <p>{`R$ ${product.price}`}</p>
-            {
-              !renderBtn ? ''
-                : (
+          </Link>
+          {
+            !renderBtn ? ''
+              : (
+                <>
+                  <input
+                    type="button"
+                    name="add+Item"
+                    value="+"
+                    data-testid="product-increase-quantity"
+                    onClick={ (event) => handleCart(event, product) }
+                  />
+                  <input
+                    type="button"
+                    name="add-Item"
+                    value="-"
+                    disabled={ qntCart.length === 1 }
+                    data-testid="product-decrease-quantity"
+                    onClick={ (event) => handleCart(event, product) }
+                  />
                   <p data-testid="shopping-cart-product-quantity">
                     {`Quantidade: ${qntCart.length}`}
-                  </p>)
-            }
-          </Link>
+                  </p>
+                  <input
+                    type="button"
+                    name="remove-product"
+                    data-testid="remove-product"
+                    value="Remover Item"
+                    onClick={ (event) => handleCart(event, product) }
+                  />
+                </>
+              )
+          }
           {
             !renderBtn ? (
               <button
