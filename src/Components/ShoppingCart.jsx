@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Card from './Card';
+import CartRender from './CartRender';
 
 export default class ShoppingCart extends Component {
   render() {
@@ -11,12 +11,11 @@ export default class ShoppingCart extends Component {
           (!cartProducts.length)
             ? <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
             : (
-              <Card
-                returnedProducts={ cartProducts }
+              <CartRender
                 handleCart={ handleCart }
+                returnedProducts={ cartProducts }
                 renderBtn
-              />
-            )
+              />)
         }
       </div>
 

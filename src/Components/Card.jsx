@@ -5,15 +5,16 @@ import PropTypes from 'prop-types';
 class Card extends Component {
   render() {
     const { returnedProducts, handleCart, renderBtn } = this.props;
-    const listItemsCart = [...new Set(returnedProducts)];
-    let listProducts = listItemsCart.map((product, index) => {
+    const listItemsCart = returnedProducts.filter((ele, pos) => (
+      returnedProducts.indexOf(ele) === pos
+    ));
+    let listProducts = listItemsCart.map((product) => {
       const qntCart = returnedProducts.filter((element) => element === product);
       return (
         <div data-testid="product" key={ product.id }>
           <Link
             to={ `/product-details/${product.id}` }
             data-testid="product-detail-link"
-            key={ index }
           >
             <p data-testid="shopping-cart-product-name">{product.title}</p>
             <img src={ product.thumbnail } alt={ product.title } />

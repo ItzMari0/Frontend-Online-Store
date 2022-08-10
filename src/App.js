@@ -11,21 +11,55 @@ class App extends React.Component {
     this.handleCart = this.handleCart.bind(this);
   }
 
-  handleCart(_event, item) {
+  componentDidMount() {
+    if (localStorage.getItem('CardProducts')) {
+      const storage = localStorage.getItem('CardProducts');
+      const result = JSON.parse(storage);
+      this.setState({
+        cartProducts: result,
+      });
+    }
+  }
+
+  componentDidUpdate() {
     const { cartProducts } = this.state;
-    const filtred = cartProducts.filter((i) => i !== item);
-    if (_event.target.value === 'Remover Item') {
-      return this.setState({ cartProducts: [...filtred] });
+    if (cartProducts) {
+      localStorage.setItem('CardProducts', JSON.stringify(cartProducts));
     }
-    if (_event.target.value === '-') {
-      const soItens = cartProducts.filter((i) => i === item);
-      if (soItens.length > 1) {
-        soItens.pop();
-      }
-      this.setState({ cartProducts: [...soItens, ...filtred] });
-    } else {
-      this.setState((prevState) => ({ cartProducts: [...prevState.cartProducts, item] }));
+  }
+
+  handleCart(event, item) {
+    const { cartProducts } = this.state;
+    /* const newItem = {...item, qt: 1}; */
+    const filtered = cartProducts.filter((i) => i[0].id !== item.id);
+    console.log(filtered);
+    if (event.target.value === 'Remover Item') {
+      return this.setState({ cartProducts: [...filtered] });
     }
+    if (event.target.value === '-') {
+      let qnt = 1;
+      cartProducts.forEach((e, index) => {
+        if (e[0].id === item.id) {
+          qnt = e[1] - 1;
+          cartProducts.splice(index, 1);
+        }
+      });
+      return this.setState((prevState) => ({
+        cartProducts: [...prevState.cartProducts, [item, qnt]],
+      }));
+    }
+    let qnt = 1;
+    cartProducts.forEach((e) => {
+      if (e[0].id === item.id) qnt = e[1] + 1;
+    });
+    if (qnt > 1) {
+      (cartProducts.forEach((e, index) => {
+        if (e[0].id === item.id) cartProducts.splice(index, 1);
+      }));
+    }
+    this.setState((prevState) => ({
+      cartProducts: [...prevState.cartProducts, [item, qnt]],
+    }));
   }
 
   render() {
