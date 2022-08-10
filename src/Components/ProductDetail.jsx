@@ -2,18 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductById } from '../services/api';
-import Form from './Form';
 
 export default class ProductDetail extends Component {
   state = {
-    productDetails: '', quantity: '',
+    productDetails: '',
   }
 
   componentDidMount() {
     this.getProduct();
-    const x = JSON.parse(localStorage.CardProducts).reduce((acc, curr) => (
-      curr[1] + acc), 0);
-    this.setState({ quantity: x });
   }
 
   getProduct = async () => {
@@ -25,10 +21,9 @@ export default class ProductDetail extends Component {
   }
 
   render() {
-    const { productDetails, quantity } = this.state;
+    const { productDetails } = this.state;
     const { title, thumbnail, price } = productDetails;
     const { handleCart } = this.props;
-    const { match: { params: { id } } } = this.props;
     return (
       <div>
         <h1 data-testid="product-detail-name">{title}</h1>
@@ -39,7 +34,6 @@ export default class ProductDetail extends Component {
           data-testid="shopping-cart-button"
         >
           <button type="button">Ir para o Carrinho</button>
-          <span data-testid="shopping-cart-size">{ quantity }</span>
         </Link>
         <button
           type="button"
@@ -48,7 +42,6 @@ export default class ProductDetail extends Component {
         >
           Adicionar ao Carrinho
         </button>
-        <Form idPage={ id } />
       </div>
     );
   }
