@@ -32,7 +32,6 @@ class App extends React.Component {
 
   handleCart(event, item) {
     const { cartProducts } = this.state;
-    /* const newItem = {...item, qt: 1}; */
     const filtered = cartProducts.filter((i) => i[0].id !== item.id);
     console.log(filtered);
     if (event.target.value === 'Remover Item') {
