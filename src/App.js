@@ -6,8 +6,8 @@ import ProductDetail from './Components/ProductDetail';
 import Checkout from './Components/Checkout';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = { cartProducts: [], validLink: false };
     this.handleCart = this.handleCart.bind(this);
     this.changeLinkPay = this.changeLinkPay.bind(this);
