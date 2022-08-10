@@ -16,20 +16,14 @@ class Home extends React.Component {
       categories: [],
       id: '',
       returnedProducts: [],
-      quantity: '',
     };
   }
 
   componentDidMount() {
     this.setState(async () => {
       const categories = await getCategories();
-      this.setState({ categories });
+      return this.setState({ categories });
     });
-    if (localStorage.CardProducts) {
-      const x = JSON.parse(localStorage.CardProducts).reduce((acc, curr) => (
-        curr[1] + acc), 0);
-      this.setState({ quantity: x });
-    }
   }
 
   handleChange({ target }, idProduct) {
@@ -56,7 +50,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { product, products, categories, returnedProducts, quantity } = this.state;
+    const { product, products, categories, returnedProducts } = this.state;
     const { handleCart } = this.props;
     const categoriesProduct = categories.map(({ name, id }) => (
       <label data-testid="category" key={ id } htmlFor={ id }>
@@ -79,7 +73,6 @@ class Home extends React.Component {
           data-testid="shopping-cart-button"
         >
           <button type="button">Ir para o Carrinho</button>
-          <span data-testid="shopping-cart-size">{ quantity }</span>
         </Link>
         <div className="div-home">
           <div className="div-category">
